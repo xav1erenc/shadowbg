@@ -3,8 +3,8 @@ package main
 import (
 	"database/sql"
 	_ "github.com/mattn/go-sqlite3"
-    "log"
-    "os"
+	"log"
+	"os"
 	"strings"
 	"fmt"
 	"github.com/urfave/cli/v2"
@@ -19,7 +19,7 @@ import (
 )
 
 type dbItem struct {
-    Magnet      string            `json:"magnet"`
+	Magnet      string            `json:"magnet"`
 	Title       string            `json:"title"`
 	Datetime    string            `json:"dt"`
 	Categories  string            `json:"cat"`
@@ -28,10 +28,10 @@ type dbItem struct {
 }
 
 func frontendFolderExists() (bool, error) {
-    _, err := os.Stat("frontend")
-    if err == nil { return true, nil }
-    if os.IsNotExist(err) { return false, nil }
-    return false, err
+	_, err := os.Stat("frontend")
+	if err == nil { return true, nil }
+	if os.IsNotExist(err) { return false, nil }
+	return false, err
 }
 
 func ConnectDatabase() (*sql.DB, error) {
@@ -45,31 +45,31 @@ func main() {
 	var port string
 	var serveFrontend bool = false 
 	app := &cli.App{
-        Flags: []cli.Flag{
-            &cli.StringFlag{
+		Flags: []cli.Flag{
+			&cli.StringFlag{
 				Name: "port",
-                Usage: "Specify the port to run the API on",
+				Usage: "Specify the port to run the API on",
 				Destination: &port,
 				Required: true,
-            },
+			},
 			&cli.BoolFlag{
 				Name: "serve-frontend",
 				Value: false,
 				Usage: "Serve frontend along the API",
-				Destination: &noFrontEnd,
+				Destination: &serveFrontend,
 			},
-        },
+		},
 		Action: func(c *cli.Context) error {
 			return nil
 		},
-    }
-    if err := app.Run(os.Args); err != nil {
-        log.Fatal(err)
-    }
+	}
+	if err := app.Run(os.Args); err != nil {
+		log.Fatal(err)
+	}
 	rarbgDB, err := ConnectDatabase()
 	if err != nil {
-        log.Fatal(err)
-    }
+		log.Fatal(err)
+	}
 	r := gin.Default()
 	r.Use(cors.Default())
 	frontendExists, _ := frontendFolderExists()
@@ -110,10 +110,10 @@ func mainPage(db *sql.DB) gin.HandlerFunc {
 }
 
 func writeContentType(w http.ResponseWriter, value []string) {
-    header := w.Header()
-    if val := header["Content-Type"]; len(val) == 0 {
-        header["Content-Type"] = value
-    }
+	header := w.Header()
+	if val := header["Content-Type"]; len(val) == 0 {
+		header["Content-Type"] = value
+	}
 }
 
 func searchResults(db *sql.DB) gin.HandlerFunc {
@@ -190,7 +190,6 @@ func Search(query string, DB *sql.DB, offset int) ([]dbItem, error) {
 				fmt.Println(err)
 				return nil, err
 			}
-	
 			items = append(items, _DBItem)
 		}
 		err = imdbRows.Err()
