@@ -24,3 +24,10 @@ You need to download the `rarbg_db.zip` file, unzip it and rename `rarbg_db.sqli
 OR
 ./shadow.bg --port 8080                  # To serve only the headless API
 ````
+
+###### Docker Image
+Use the following commands to build and run the docker image
+```
+docker build -t "shadowbg" .
+docker run -d --name shadowbg -p 80:80 -v /tmp/rarbg_db.sqlite:/data/rarbg_db.sqlite shadowbg
+```
