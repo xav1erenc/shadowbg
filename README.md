@@ -26,7 +26,8 @@ OR
 ````
 
 ###### Docker Image
-Use the following commands to build and run the docker image
+Use the following commands to build and run the docker image. \
+Make sure that the original rarbg_db.sqlite exists under /data
 ```
 docker build -t "shadowbg" .
 docker run -d --name shadowbg -p 80:80 -v /tmp/rarbg_db.sqlite:/data/rarbg_db.sqlite shadowbg
